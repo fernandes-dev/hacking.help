@@ -34,7 +34,8 @@
     "axios": "^0.19.2",
     "crypto": "^1.0.1",
     "date-fns": "^2.10.0",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "pg": "^8.2.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
