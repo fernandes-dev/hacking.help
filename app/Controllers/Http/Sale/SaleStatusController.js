@@ -1,15 +1,16 @@
 const SaleStatus = use('App/Models/Sale/SaleStatus');
 
 class SaleStatusController {
-  async index({ auth }) {
+  async index({ auth, response }) {
     try {
       await auth.check();
-
       const saleStatus = await SaleStatus.all();
 
       return saleStatus;
     } catch (error) {
-      return error;
+      return response
+        .status(400)
+        .send({ message: 'Erro, faça login novamente', error });
     }
   }
 

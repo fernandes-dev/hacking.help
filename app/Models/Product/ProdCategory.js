@@ -2,8 +2,8 @@
 const Model = use('Model');
 
 class ProdCategory extends Model {
-  company() {
-    return this.belongsTo('App/Models/Company/Company');
+  user() {
+    return this.belongsTo('App/Models/User/User');
   }
 
   subcategories() {

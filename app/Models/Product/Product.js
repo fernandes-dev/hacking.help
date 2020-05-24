@@ -2,8 +2,8 @@
 const Model = use('Model');
 
 class Product extends Model {
-  company() {
-    return this.belongsTo('App/Models/Company/Company');
+  user() {
+    return this.belongsTo('App/Models/User/User');
   }
 
   category() {

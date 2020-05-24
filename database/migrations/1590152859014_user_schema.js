@@ -4,15 +4,18 @@ const Schema = use('Schema');
 class UserSchema extends Schema {
   up() {
     this.alter('users', table => {
-      table.dropUnique('phone')
-      table.date('birthday').alter()
+      table.dropUnique('phone');
+      table.date('birthday').alter();
     });
   }
 
   down() {
     this.alter('users', table => {
-      table.unique('phone').alter();
-      table.date('birthday').notNullable().alter();
+      table.unique('phone');
+      table
+        .date('birthday')
+        .notNullable()
+        .alter();
     });
   }
 }

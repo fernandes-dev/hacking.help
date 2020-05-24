@@ -1,6 +1,7 @@
 const User = use('App/Models/User/User');
 const Address = use('App/Models/Address/Address');
 const SmsCode = use('App/Models/User/SmsCode');
+const Category = use('App/Models/Product/ProdCategory');
 
 class UserController {
   async index({ auth, response }) {
@@ -8,7 +9,15 @@ class UserController {
       const user = await auth.getUser();
 
       const users = await User.query()
-        .setHidden(['password'])
+        .setHidden([
+          'password',
+          'simple_national',
+          'company_name',
+          'state_registration',
+          'adm',
+          'object_id',
+        ])
+        .with('address')
         .whereNot('id', user.id)
         .fetch();
 
@@ -85,12 +94,20 @@ class UserController {
   async show({ params, auth }) {
     await auth.check();
 
+    const products = await Category.query()
+      .with('products', builder => {
+        builder.where('user_id', params.id);
+        builder.where('parent_product', null);
+      })
+      .where('user_id', params.id)
+      .fetch();
+
     const user = await User.query()
       .with('address')
       .where('id', params.id)
       .fetch();
 
-    return user;
+    return { products, user };
   }
 
   async getProfille({ auth }) {

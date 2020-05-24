@@ -18,7 +18,7 @@ class ProdSubcategoryController {
       const data = request.only([
         'name',
         'category_id',
-        'company_id',
+        'user_id',
         'limit',
         'mandatory',
       ]);
@@ -53,7 +53,7 @@ class ProdSubcategoryController {
       const data = request.only([
         'name',
         'category_id',
-        'company_id',
+        'user_id',
         'limit',
         'mandatory',
       ]);

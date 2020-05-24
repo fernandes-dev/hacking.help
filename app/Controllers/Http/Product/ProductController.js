@@ -6,7 +6,7 @@ class ProductController {
   async index({ request }) {
     try {
       const parent = request.only(['parent_id']);
-      const company = request.only(['company_id']);
+      const user = request.only(['user_id']);
 
       if (parent.parent_id) {
         const childs = await Subcategory.query()
@@ -17,13 +17,13 @@ class ProductController {
         return childs;
       }
 
-      if (company.company_id) {
+      if (user.company_id) {
         const products = await Category.query()
           .with('products', builder => {
-            builder.where('company_id', company.company_id);
+            builder.where('user_id', user.company_id);
             builder.where('parent_product', null);
           })
-          .where('company_id', company.company_id)
+          .where('user_id', user.company_id)
           .fetch();
 
         return products;
@@ -41,7 +41,7 @@ class ProductController {
     }
   }
 
-  async store({ request, auth }) {
+  async store({ request, response, auth }) {
     try {
       await auth.check();
 
@@ -78,7 +78,7 @@ class ProductController {
         'status_availability',
         'color',
         'parent_product',
-        'company_id',
+        'user_id',
         'mount',
       ]);
 
@@ -86,7 +86,10 @@ class ProductController {
 
       return { success: 'Produto cadastrado com sucesso', product };
     } catch (error) {
-      return error;
+      return response.status(400).send({
+        message: 'Erro ao cadastrar produto, faça login novamente',
+        error,
+      });
     }
   }
 
@@ -156,7 +159,7 @@ class ProductController {
         'status_availability',
         'color',
         'parent_product',
-        'company_id',
+        'user_id',
         'mount',
       ]);
 

@@ -17,7 +17,7 @@ class ProdCategoryController {
     try {
       await auth.check();
 
-      const data = request.only(['name', 'company_id', 'limit', 'mandatory']);
+      const data = request.only(['name', 'user_id', 'limit', 'mandatory']);
 
       const category = await Category.create(data);
 

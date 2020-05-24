@@ -14,9 +14,9 @@ class SaleController {
     }
   }
 
-  async store({ request, auth }) {
+  async store({ request, response, auth }) {
     try {
-      await auth.check();
+      const user = await auth.getUser();
 
       const data = request.only([
         'user_client_id',
@@ -37,15 +37,19 @@ class SaleController {
         'user_who_changed_id',
         'change',
         'change_for',
-        'company_id',
+        'user_id',
         'credit',
       ]);
+
+      data.user_client_id = user.id;
 
       const sale = await Sale.create(data);
 
       return { success: 'Venda realizada com sucesso', sale };
     } catch (error) {
-      return error;
+      return response
+        .status(400)
+        .send({ message: 'Erro ao adicionar produto à sacola', error });
     }
   }
 
@@ -68,7 +72,7 @@ class SaleController {
 
   async update({ params, request, auth }) {
     try {
-      await auth.check();
+      const user = await auth.getUser();
 
       const sale = await Sale.findOrFail(params.id);
 
@@ -88,12 +92,13 @@ class SaleController {
         'cupom',
         'sale_type_id',
         'sale_status_id',
-        'sale_statuses',
         'user_who_changed_id',
         'change',
         'change_for',
         'credit',
       ]);
+
+      data.user_client_id = user.id;
 
       sale.merge(data);
 

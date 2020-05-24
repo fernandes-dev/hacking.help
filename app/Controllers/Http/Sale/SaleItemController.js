@@ -1,7 +1,7 @@
 const SaleItem = use('App/Models/Sale/SaleItem');
 const SaleStatus = use('App/Models/Sale/SaleStatus');
 const Sale = use('App/Models/Sale/Sale');
-const Company = use('App/Models/Company/Company');
+const User = use('App/Models/User/User');
 
 class SaleItemController {
   async index({ auth }) {
@@ -31,7 +31,7 @@ class SaleItemController {
         'sale_type_id',
         'user_who_changed_id',
         'user_seller_id',
-        'company_id',
+        'user_id',
         'comment',
       ]);
 
@@ -46,14 +46,14 @@ class SaleItemController {
 
       const saleJSON = sale.toJSON();
 
-      data.company_id =
-        typeof data.company_id === 'number'
-          ? data.company_id
-          : parseInt(data.company_id, 10);
+      data.user_id =
+        typeof data.user_id === 'number'
+          ? data.user_id
+          : parseInt(data.user_id, 10);
 
-      if (saleJSON.length > 0 && saleJSON[0].company_id !== data.company_id)
+      if (saleJSON.length > 0 && saleJSON[0].user_id !== data.user_id)
         return response.status(400).send({
-          message: 'Você não pode adicionar itens de empresas diferentes',
+          message: 'Você não pode adicionar itens de vendedores diferentes',
         });
 
       if (saleJSON.length === 0) {
@@ -62,7 +62,7 @@ class SaleItemController {
           user_seller_id: data.user_seller_id,
           sale_status_id: saleStatus.id,
           qtd_parcels: 1,
-          company_id: data.company_id,
+          user_id: data.user_id,
         });
 
         data.sale_id = newSale.id;
@@ -92,14 +92,16 @@ class SaleItemController {
         await SaleItem.createMany(childs);
       }
 
-      const company = await Company.findOrFail(data.company_id);
+      const userSeller = await User.findOrFail(data.user_id);
 
       return {
-        company: { id: company.id, name: company.name },
+        saller: { id: userSeller.id, name: userSeller.name },
         sale: data.sale_id,
       };
     } catch (error) {
-      return { erro: error };
+      return response
+        .status(400)
+        .send({ message: 'Erro ao adicionar item, fale com o suporte', error });
     }
   }
 
