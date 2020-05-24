@@ -5,7 +5,7 @@ const Env = use('Env');
 const Helpers = use('Helpers');
 
 module.exports = {
-  connection: Env.get('DB_CONNECTION', 'mysql'),
+  connection: Env.get('DB_CONNECTION', 'pg'),
 
   mysql: {
     client: 'mysql2',
