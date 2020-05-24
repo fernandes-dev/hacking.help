@@ -1,6 +1,7 @@
 ## Cadastrando Usuários
 
 #### enviar POST para '/user'
+`
   {
     'name': 'string com nome completo'
     'type': 'Física' ou 'Jurídica'
@@ -21,36 +22,42 @@
       'longitude': 'longitude'
     }
   }
+`
 
 ## Cadastrando Produtos
 
 ### deve cadastrar unidade de venda, tipo de produtos, categoria e subcategoria antes.
 
 #### categoria - POST para "/prod-category"
+`
   {
     "name": "Nome da categoria",
     "user_id": id do usuario responsável,
   }
-
+`
 #### subcategoria - POST para "/prod-subcategory"
+`
   {
     "name": "Nome da categoria",
     "user_id": id do usuario responsável,
     "category_id": id da categoria a qual essa subcategoria pertence,
   }
-
+`
 #### unidade de venda - POST para "/prod-unity"
+`
   {
     "name": "Nome" // exemplo: UN, - KG - M
     "description": "Descrição" // exemplo: Unidade, Quilos, Metros
   }
-
+`
 #### tipo de produto - POST para "/prod-type"
+`
   {
     "name": "Nome" // exemplo: Produto p/ Revenda, Matéria Prima, etc
   }
-
+`
 #### produtos - POST para "/product"
+`
   {
     "name": "Nome do produtos",
     "prod_category_id": id da categoria,
@@ -64,7 +71,7 @@
     "status_availability": 'Disponível' ou 'Indisponível',
     "user_id": id do usuário responsável
   }
-
+`
 
 ## Adicionando produto ao carrinho de compras
 ##### é obrigatório estar devidamente autenticado
@@ -72,20 +79,20 @@
 ### deve cadastrar tipo de venda e status de venda antes do usuário realizar pedidos
 
 #### enviar POST para '/sale-type'
-
+`
   {
     "name": 'Online' ou 'Presencial' // geralmente será online
   }
-
+`
 #### enviar POST para '/sale-status'
-
+`
   {
     "name": 'Pendente', 'Cancelada' ou 'Finalizada' // cadastrar os três status básicos
   }
-
+`
 #### enviar POST para '/sale-item' para adicionar ao carrinho
 ##### sempre deve adicionar itens no carrinho e só depois finalizar a compra
-
+`
   {
     "product_id": id do produto a ser adicionado,
     "product_qtd": quantidade,
@@ -95,20 +102,20 @@
     "user_id": id do usuário que fornece o produto para compra,
     "comment": "algum comentário sobre a compra"
   }
-
+`
 #### enviar PUT para '/sale' para finalizar compra
-
+`
   {
     "total": 50, // valor total da compra
     "sale_status_id": id do status de finalizada
   }
-
+`
 #### enviar PUT para '/sale' para marcar como "entregue"
-
+`
   {
     "sale_status_id": id do status de entregue
   }
-
+`
 ### Para visualizar os produtos de um vendedor
 #### enviar GET para "/user/id" passando o id do usuário no final da url, assim: /user/1
 
